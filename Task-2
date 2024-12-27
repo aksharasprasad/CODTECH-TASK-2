@@ -1,0 +1,78 @@
+/*               
+
+*/
+
+
+
+class Student:
+    def __init__(self, name):
+        self.name = name
+        self.grades = {}
+
+    def add_grade(self, subject, grade):
+        if subject not in self.grades:
+            self.grades[subject] = []
+        self.grades[subject].append(grade)
+        print(f"Added grade {grade} for {subject}.")
+
+    def calculate_average(self):
+        total_grades = sum([sum(grades) for grades in self.grades.values()])
+        total_count = sum([len(grades) for grades in self.grades.values()])
+        return total_grades / total_count if total_count != 0 else 0
+
+    def determine_letter_grade(self, average):
+        if average >= 90:
+            return 'S'
+        elif average >= 80:
+            return 'A+'
+        elif average >= 70:
+            return 'A'
+        elif average >= 60:
+            return 'B+'
+        else:
+            return 'B'
+
+    def calculate_gpa(self, average):
+        if average >= 90:
+            return 10.0
+        elif average >= 80:
+            return 9.0
+        elif average >= 70:
+            return 8.0
+        elif average >= 60:
+            return 7.0
+        else:
+            return 6.0
+
+    def display_grades(self):
+        print(f"\nGrades for {self.name}:")
+        for subject, grades in self.grades.items():
+            print(f"  {subject}: {grades}")
+        average = self.calculate_average()
+        letter_grade = self.determine_letter_grade(average)
+        gpa = self.calculate_gpa(average)
+        print(f"\nOverall Average: {average:.2f}")
+        print(f"Letter Grade: {letter_grade}")
+        print(f"GPA: {gpa:.2f}")
+
+if __name__ == "__main__":
+    # Initialize student
+    name = input("Enter the student's name: ")
+    student = Student(name)
+
+    # Input grades interactively
+    while True:
+        subject = input("Enter the subject name (or type 'done' to finish): ").strip()
+        if subject.lower() == 'done':
+            break
+        try:
+            grade = float(input(f"Enter the grade for {subject}: "))
+            if 0 <= grade <= 100:
+                student.add_grade(subject, grade)
+            else:
+                print("Please enter a grade between 0 and 100.")
+        except ValueError:
+            print("Invalid input. Please enter a numeric grade.")
+
+    # Display grades and overall performance
+    student.display_grades()
